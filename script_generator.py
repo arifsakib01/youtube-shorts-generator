@@ -33,7 +33,7 @@ def generate_script(topic: str, settings: Settings) -> dict[str, Any]:
         raise ScriptGenerationError("Gemini returned an invalid script format. Please retry the request.") from exc
 
 def _build_prompt(topic: str, max_scenes: int) -> str:
-    return f"""You write natural, human-sounding YouTube Shorts for one viewer. Create a warm, curious vertical video about {topic!r}.
+    return f"""You are an elite YouTube Shorts showrunner. Create a premium, highly shareable vertical short about {topic!r} for one curious viewer, using a strong first-second hook, escalating reveals, a satisfying payoff, and a natural comment question.
 Return ONLY valid JSON with title, description, and scenes. Each scene must contain scene_number, narration, pexels_query, and duration_hint_seconds.
 Rules:
 - Use between 3 and {max_scenes} scenes and 30 to 55 seconds total narration.
