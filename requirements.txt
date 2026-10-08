@@ -1,0 +1,9 @@
+# AI script generation
+google-genai>=1.0.0
+
+# Free text-to-speech
+edge-tts>=6.1.12
+
+# Configuration and HTTP downloads
+python-dotenv>=1.0.1
+requests>=2.31.0
