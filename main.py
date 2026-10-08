@@ -38,7 +38,7 @@ def generate_short(topic: str) -> Path:
         ) from exc
 
     if topic == "__DAILY_AI_NEWS__":
-        from news_fetcher.news_fetcher import fetch_daily_news
+        from daily_news import fetch_daily_news
         topic = fetch_daily_news()
 
     script = generate_script(topic, settings)
