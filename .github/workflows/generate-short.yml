@@ -1,5 +1,6 @@
 name: Generate YouTube Short
 on:
+  push:
   workflow_dispatch:
     inputs:
       topic:
@@ -20,7 +21,7 @@ jobs:
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
-      GEMINI_MODEL: ${{ inputs.gemini_model }}
+      GEMINI_MODEL: ${{ inputs.gemini_model || 'gemini-3.5-flash-lite' }}
       VOICE: en-US-JennyNeural
       OUTPUT_DIR: output
       TEMP_DIR: .tmp
@@ -41,7 +42,7 @@ jobs:
       - name: Generate short
         run: python main.py "$TOPIC"
         env:
-          TOPIC: ${{ inputs.topic }}
+          TOPIC: ${{ inputs.topic || 'A surprising science fact' }}
       - uses: actions/upload-artifact@v4
         with:
           name: youtube-short
