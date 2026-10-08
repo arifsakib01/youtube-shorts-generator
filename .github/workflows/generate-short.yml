@@ -1,5 +1,74 @@
 name: Generate YouTube Short
 
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Topic for the YouTube Short"
+        required: true
+        type: string
+      gemini_model:
+        description: "Gemini model"
+        required: false
+        default: "gemini-3.8-flash"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      GEMINI_MODEL: ${{ inputs.gemini_model }}
+      OUTPUT_DIR: output
+      TEMP_DIR: .tmp
+      VIDEO_WIDTH: 1080
+      VIDEO_HEIGHT: 1920
+      VIDEO_FPS: 30
+      MAX_SCENES: 8
+      VOICE: en-US-AriaNeural
+      LOG_LEVEL: INFO
+      FFMPEG_BINARY: ffmpeg
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          ffmpeg -version
+          ffprobe -version
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+      - name: Validate required secrets
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: |
+          test -n "$GEMINI_API_KEY" || (echo "Missing GEMINI_API_KEY repository secret" && exit 1)
+          test -n "$PEXELS_API_KEY" || (echo "Missing PEXELS_API_KEY repository secret" && exit 1)
+      - name: Generate short
+        run: python main.py "$TOPIC"
+        env:
+          TOPIC: ${{ inputs.topic }}
+      - name: Upload rendered short
+        uses: actions/upload-artifact@v4
+        with:
+          name: youtube-short
+          path: output/*.mp4
+          if-no-files-found: error
+          retention-days: 7
+name: Generate YouTube Short
+
 
 on:
   workflow_dispatch:
