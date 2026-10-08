@@ -7,6 +7,8 @@ logger=logging.getLogger(__name__)
 class VideoEditingError(RuntimeError): pass
 
 
+
+
 def render_short(*,script:dict[str,Any],voiceover:dict[str,Any],clips:list[dict[str,Any]],settings:Settings)->Path:
     out=(settings.output_dir/_safe_filename(script["title"])).with_suffix(".mp4"); tmp=settings.temp_dir; concat=tmp/"concat.txt"; ass=tmp/"captions.ass"; parts=[]; ts=voiceover["scene_timings"]
     if len(clips)!=len(ts) or len(clips)!=len(script.get("scenes",[])): raise ValueError("Each scene needs one clip and timing entry.")
@@ -19,10 +21,14 @@ def render_short(*,script:dict[str,Any],voiceover:dict[str,Any],clips:list[dict[
     return out
 
 
+
+
 def _run(cmd:list[str],action:str)->None:
     try: subprocess.run(cmd,check=True,capture_output=True,text=True)
     except FileNotFoundError as exc: raise OSError("FFmpeg executable was not found.") from exc
     except subprocess.CalledProcessError as exc: raise subprocess.SubprocessError("Failed while %s: %s"%(action,(exc.stderr or "")[-1000:])) from exc
+
+
 
 
 def _write_ass(path:Path,scenes:list[dict[str,Any]],ts:list[dict[str,Any]],w:int,h:int)->None:
@@ -33,9 +39,6 @@ PlayResY: %d
 ScaledBorderAndShadow: yes
 
 
+
+
 [V4+ Styles]
-Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Shorts,Arial,58,&H00FFFFFF,&H00FFFFFF,&H00101010,&H99000000,1,0,0,0,100,100,0,0,3,4,2,2,90,90,260,1
-
-
-[Events]
