@@ -143,9 +143,27 @@ def _write_srt(path: Path, scenes: list[dict[str, Any]], timings: list[dict[str,
     for number, (scene, timing) in enumerate(zip(scenes, timings), start=1):
         blocks.append(
             f"{number}\n{_srt_time(timing['start'])} --> {_srt_time(timing['end'])}\n"
-            f"{scene['narration'].strip()}\n"
+            f"{_format_caption(scene['narration'])}\n"
         )
     path.write_text("\n".join(blocks), encoding="utf-8")
+
+
+def _format_caption(text: str, max_line_length: int = 42) -> str:
+    """Wrap captions into readable two-line chunks without changing speech."""
+    words = text.strip().split()
+    lines = []
+    current = []
+    length = 0
+    for word in words:
+        if current and length + len(word) + 1 > max_line_length:
+            lines.append(" ".join(current))
+            current = []
+            length = 0
+        current.append(word)
+        length += len(word) + (1 if length else 0)
+    if current:
+        lines.append(" ".join(current))
+    return "\n".join(lines)
 
 
 def _srt_time(seconds: float) -> str:

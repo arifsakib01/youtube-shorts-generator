@@ -28,7 +28,9 @@ def generate_voiceover(
         raise ValueError("The script must contain at least one scene.")
 
     output_path = settings.temp_dir / "voiceover.mp3"
-    narration = " ".join(str(scene["narration"]).strip() for scene in scenes)
+    # A short pause between scenes makes the delivery feel less like one
+    # uninterrupted synthetic paragraph.
+    narration = " ... ".join(str(scene["narration"]).strip() for scene in scenes)
     if not narration.strip():
         raise ValueError("The script contains no narration.")
 

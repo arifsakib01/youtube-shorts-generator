@@ -104,6 +104,15 @@ Use exactly this structure:
 Rules:
 - Use between 3 and {max_scenes} scenes.
 - Make the total narration approximately 30 to 55 seconds.
+- Sound like a curious, knowledgeable person talking to one viewer, not a
+  documentary, advertisement, essay, or AI assistant.
+- Open scene 1 with a specific hook that creates curiosity. Speak directly to
+  the viewer occasionally using "you" and use natural contractions such as
+  "it's", "you'll", and "don't" where appropriate.
+- Vary sentence length and rhythm. Use short sentences for emphasis and commas
+  or em dashes where a human speaker would naturally pause.
+- Avoid filler openings such as "In this video", "Did you know", "Welcome
+  back", and "Let's dive in". Avoid repeating the topic in every scene.
 - Make every scene narration natural, factual, and suitable for a general audience.
 - Use one distinct, literal English Pexels search query per scene.
 - Use integer duration_hint_seconds between 2 and 12.

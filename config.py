@@ -61,8 +61,8 @@ class Settings:
             video_height=_read_int("VIDEO_HEIGHT", 1920),
             video_fps=_read_int("VIDEO_FPS", 30),
             max_scenes=_read_int("MAX_SCENES", 8, minimum=3),
-            voice=os.getenv("VOICE", "en-US-AriaNeural").strip()
-            or "en-US-AriaNeural",
+            voice=os.getenv("VOICE", "en-US-JennyNeural").strip()
+            or "en-US-JennyNeural",
             log_level=os.getenv("LOG_LEVEL", "INFO").strip().upper() or "INFO",
             ffmpeg_binary=os.getenv("FFMPEG_BINARY", "ffmpeg").strip() or "ffmpeg",
         )
