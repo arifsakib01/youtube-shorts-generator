@@ -1,6 +1,8 @@
 name: Generate YouTube Short
 on:
   push:
+  schedule:
+    - cron: "0 2 * * *"
   workflow_dispatch:
     inputs:
       topic:
@@ -42,7 +44,7 @@ jobs:
       - name: Generate short
         run: python main.py "$TOPIC"
         env:
-          TOPIC: ${{ inputs.topic || 'A surprising science fact' }}
+          TOPIC: ${{ inputs.topic || '__DAILY_AI_NEWS__' }}
       - uses: actions/upload-artifact@v4
         with:
           name: youtube-short
